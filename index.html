@@ -583,6 +583,7 @@ body:has(.lgame){background:#ecdfc6}
 .lgame>*{position:relative;z-index:1;width:100%;max-width:640px;margin-left:auto;margin-right:auto}
 .lgame .l-chip{background:#fff;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
 .l-top{display:flex;align-items:center;gap:7px}
+@media (display-mode:standalone){.lgame{padding-top:calc(env(safe-area-inset-top) + 18px)!important}.t2{padding-top:calc(env(safe-area-inset-top) + 18px)!important}}
 .l-ib{width:38px;height:38px;flex:none;border-radius:12px;border:0;display:grid;place-items:center;color:#173c3b;padding:0;cursor:pointer}
 .l-brand{flex:1;min-width:0;line-height:1.15}.l-brand small{display:block;font:700 9.5px var(--sf);letter-spacing:1.6px;color:#9a7b3c}.l-brand b{font:800 16px var(--sf);color:#173c3b;letter-spacing:-.2px}
 .lgame .timer{height:38px;display:flex;align-items:center;padding:0 12px;border-radius:12px;border:0;background:#fff;color:#173c3b;font:800 16px var(--sfr);font-variant-numeric:tabular-nums;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
@@ -633,6 +634,18 @@ body:has(.lgame){background:#ecdfc6}
 .lgame .mz-actions .act{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lgame .mz-actions:has(.act:nth-child(4)) .act{font-size:13px;padding:0 3px}
 .lgame .mz-actions .act.dump:not(:disabled){background:#5d6469;color:#fff;box-shadow:0 8px 18px rgba(40,40,40,.25)}
+.lgame .stage{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:14px;background:linear-gradient(180deg,#fff6d8,#ffe9a6);box-shadow:0 0 0 2px #f6b62a,0 6px 16px rgba(70,50,15,.15);margin-top:2px}
+.lgame .stg-cards{display:flex;gap:4px;flex:none}
+.lgame .stg{position:relative;padding:0;border:0;background:none;cursor:pointer;width:40px;height:56px}
+.lgame .stg img{width:40px;height:56px;border-radius:5px;box-shadow:0 3px 8px rgba(60,40,10,.35)}
+.lgame .stg i{position:absolute;top:-6px;right:-6px;width:16px;height:16px;border-radius:8px;background:#173c3b;color:#fff;font:800 9px/16px var(--sf);font-style:normal;text-align:center}
+.lgame .stg-txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.lgame .stg-txt b{font:800 14px var(--sf);color:#173c3b}.lgame .stg-txt span{font:600 12px var(--sf);color:#5a4a2c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lgame .stg-txt small{font:600 10.5px var(--sf);color:#9a7b3c}
+.lgame .stg-zoom{flex:none;background:#fff!important;color:#173c3b!important;border:0!important}
+.lgame .myzone .detail.hide{display:none}
+.lgame .stg-det{white-space:normal!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:500 12px/1.35 var(--sf)!important;color:#1d2a28!important}.lgame .stg-det b{font-size:12.5px}
+.lgame .stage:has(.stg-cards .stg:only-child){background:#fff;box-shadow:0 0 0 2px #f6b62a,0 6px 16px rgba(70,50,15,.12)}
 .lgame .hand .card.newd{box-shadow:0 0 0 2.5px #d9483b,0 8px 16px rgba(60,40,10,.3)}
 @container (max-height:300px){.l-hist{display:none}.l-felt .cplabel{display:none}}
 .l-seat{color:#fff}
@@ -2562,7 +2575,8 @@ async function playCards(p,cards){
   G.discard.push(...order);G.lastPlay[p.idx]=order;
   p.turn.placed=true;p.turn.plays=(p.turn.plays||0)+1;p.st.plays++;p.st.cardsPlayed+=cards.length;
   const pairs=ok?an.pairs:0,combo=comboName(pairs),lastG=order.length?gidOf(order[order.length-1]):null;
-  const label=combo?`${combo} ${pairs} คู่ (${cards.length} ใบ)`:claim==="set"?`เปลี่ยนต่อมเป็น ${GL[lastG].en}${cards.length>1?` + ${cards.length-1} ใบ`:""}`:`ลงต่อ ${cards.length} ใบ`;
+  const parts=(an.groups||[]).map(g=>g.set?(g.pair?`${GL[g.gid].en} + ${g.cards.filter(c=>c.kind==="hormone").map(c=>HM[c.hid].abbr).join(", ")} (คู่)`:`${GL[g.gid].en} เดี่ยว (ไม่นับคะแนน)`):`${g.cards.map(c=>HM[c.hid].abbr).join(", ")} ต่อ ${GL[g.gid].en}`);
+  const label=combo?`${combo} ${pairs} คู่ (${cards.length} ใบ)`:claim==="set"?`เปลี่ยนต่อมเป็น ${GL[lastG].en}${parts.length>1||cards.length>1?" · "+parts.join(" · "):""}`:`ลงต่อ ${cards.length} ใบ`;
   log(`✅ ${p.name} ${label}: ${cards.map(cardName).join(" + ")}`);setAct(p,combo?`${combo.replace("!","")} 🔥`:claim==="set"?`เปลี่ยนต่อม · ลง ${cards.length} ใบ`:`ลง ${cards.length} ใบ`);
   const bareG=new Set(ok?an.groups.filter(g=>g.set&&!g.pair).map(g=>g.gid):[]);
   const mult=comboMult(pairs),pts=cards.reduce((a,c)=>a+(c.kind==="gland"&&bareG.has(c.gid)?0:HPof(c)),0)*mult;addScore(p,pts,combo?combo+" ×"+mult:"ลงการ์ด");
@@ -2940,12 +2954,12 @@ function renderGame(){
       <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
     <div class="hand" id="hand">${(()=>{const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;
       const mark=(h,c)=>h.replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0);
-      const un=v.hand.filter(c=>!sel.has(c.u)),se=v.hand.filter(c=>sel.has(c.u));const cw=handCW(),step=Math.max(14,Math.round(cw*.22));
-      const trayW=se.length?cw+(se.length-1)*step:0,W=((G&&G.handW)||Math.min(innerWidth,760)-48)-(se.length?trayW+14:0);
-      const g=fanCalc(un.length,W);
-      return un.map((c,i)=>mark(cardHTML(c,{selected:false}).replace(/^<div /,`<div style="${g(i)}" `),c)).join("")+
-        (se.length?`<div class="seltray" style="width:${trayW}px"><span class="seltag">${se.length}</span>${se.map((c,i)=>mark(cardHTML(c,{selected:true}).replace(/^<div /,`<div style="left:${i*step}px;z-index:${60+i}" `),c)).join("")}</div>`:"")})()}</div>
-    <div class="detail">${one&&ART[artKey(one)]?'<button class="btn sm" id="bZoom">🔍</button>':""}<span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
+      const un=v.hand.filter(c=>!sel.has(c.u));const g=fanCalc(un.length);
+      return un.map((c,i)=>mark(cardHTML(c,{selected:false}).replace(/^<div /,`<div style="${g(i)}" `),c)).join("")})()}</div>
+    ${cs.length?`<div class="stage"><div class="stg-cards">${cs.map(c=>`<button class="stg" data-u="${c.u}" aria-label="เอา ${esc(cardName(c))} ออก"><img src="${ART[artKey(c)]||""}" alt=""><i>✕</i></button>`).join("")}</div>
+      <div class="stg-txt">${cs.length>1?`<b>จะลง ${cs.length} ใบ</b><span>${esc(cs.map(cardName).join(" + "))}</span><small>แตะการ์ดเล็กเพื่อเอาออก</small>`:`<span class="stg-det">${mt&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#c0392b">⛔ จั่วแล้ว — ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det}</span>`}</div>
+      ${one&&ART[artKey(one)]?'<button class="btn sm stg-zoom" id="bZoom">🔍 ขยาย</button>':""}</div>`:""}
+    <div class="detail${cs.length?" hide":""}"><span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
     <div class="mz-actions">
       ${one&&one.kind==="special"?`<button class="act dump" id="bDump" ${canUse?"":"disabled"}>🗑 ทิ้ง</button>`:`<button class="act play" id="bPlay" ${canPlay?"":"disabled"}>▶ ${canSee(v)?"ลง":"ลงกองกลาง"}${cs.length>1?` (${cs.length})`:""}</button>`}
       <button class="act spc" id="bUse" ${canUse?"":"disabled"}>⚡ ${one&&one.kind==="special"?"ใช้ "+esc(SP[one.act].name):"การ์ดพิเศษ"}</button>
@@ -2953,7 +2967,7 @@ function renderGame(){
       <button class="act end" id="bEnd" ${canEnd?"":"disabled"}>⏭ PASS</button>
     </div>
   </div>`:""}</div>`;
-  $("#app").querySelectorAll(".hand .card").forEach(el=>el.onclick=()=>onCard(+el.dataset.u));
+  $("#app").querySelectorAll(".hand .card,.stage .stg").forEach(el=>el.onclick=()=>onCard(+el.dataset.u));
   fanHand();
   const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
   on("#bPlay",onPlay);on("#bUse",onUse);on("#bEnd",onEnd);on("#bSee",showMaster);
