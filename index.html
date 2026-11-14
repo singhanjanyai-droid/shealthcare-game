@@ -619,6 +619,8 @@ body:has(.lgame){background:#ecdfc6}
 .l-dchip.glow{background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 0 14px rgba(246,182,42,.7);animation:pulse 1.2s ease-in-out infinite}
 .l-hist{max-width:min(300px,62cqw);font:500 11px var(--sf);color:#d8e7e5;background:rgba(0,0,0,.22);padding:3px 10px;border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .l-hist b{color:#fff}
+.lgame .hand .card.newd::after{content:"ใหม่";position:absolute;top:-9px;left:50%;transform:translateX(-50%);padding:1px 8px;border-radius:8px;background:#d9483b;color:#fff;font:800 10.5px var(--sf);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:3}
+.lgame .hand .card.newd{box-shadow:0 0 0 2.5px #d9483b,0 8px 16px rgba(60,40,10,.3)}
 @container (max-height:300px){.l-hist{display:none}.l-felt .cplabel{display:none}}
 .l-seat{color:#fff}
 .l-sav{width:40px;height:40px;flex:none;border-radius:20px;object-fit:contain;background:#fff;box-shadow:0 0 0 2px var(--zc)}
@@ -2520,6 +2522,7 @@ function analyzePlay(cs){
   else if(bare&&pairs){ok=false;reason="mixed"}    // ลงคู่ Gland+Hormone แล้ว ห้ามแถม Gland เดี่ยว
   return{ok,groups,pairs,reason};
 }
+function oddCards(cs){const an=analyzePlay(cs),ok=new Set(an.groups.flatMap(g=>g.cards));return cs.filter(c=>!ok.has(c))}
 function comboName(n){return n>=4?"QUADRUPLE MATCH!":n===3?"TRIPLE MATCH!":n===2?"DOUBLE MATCH!":""}
 function comboMult(n){return n>=2?Math.min(n,4):1}
 function netScore(p){return (p.score||0)-handHP(p)}
@@ -2788,7 +2791,7 @@ function onPlay(){act(async()=>{const p=me(),cs=selCards();if(!cs.length||cs.som
   if(p.turn.placed||p.turn.special)return;
   const ok=await playCards(p,cs);sel.clear();
   if(ok&&!G.over&&!S.multiPlay)autoEnd(p);
-  if(S.check==="block"){const rs=ok?"":analyzePlay(cs).reason;toast(ok?"✅ ลงได้!":rs==="bare"?"🚫 Gland เดี่ยว (ไม่มี Hormone คู่) ลงได้ทีละชนิด — ชนิดเดียวกันลง 2 ใบได้":rs==="mixed"?"🚫 ลงคู่ Gland+Hormone แล้ว ห้ามแถม Gland เดี่ยวชนิดอื่น":cs.some(c=>c.kind==="gland")?"🚫 Hormone ที่ลงด้วยไม่ใช่ของต่อมนี้":`🚫 ไม่ใช่ต่อมเดียวกับ ${cardName(refCard())}`,ok)}})}
+  if(S.check==="block"){const rs=ok?"":analyzePlay(cs).reason;toast(ok?"✅ ลงได้!":rs==="bare"?"🚫 Gland เดี่ยว (ไม่มี Hormone คู่) ลงได้ทีละชนิด — ชนิดเดียวกันลง 2 ใบได้":rs==="mixed"?"🚫 ลงคู่ Gland+Hormone แล้ว ห้ามแถม Gland เดี่ยวชนิดอื่น":cs.some(c=>c.kind==="gland")?`🚫 ${oddCards(cs).map(cardName).join(", ")||"Hormone บางใบ"} ไม่ใช่คู่ของต่อมที่เลือก และไม่ตรงกับต่อมบนกองกลาง`:`🚫 ไม่ใช่ต่อมเดียวกับ ${cardName(refCard())}`,ok)}})}
 function onUse(){act(async()=>{const p=me(),cs=selCards();if(cs.length!==1||cs[0].kind!=="special"||p.turn.special||p.turn.placed||(p.turn.drew&&cs[0].u!==p.turn.drawnU))return;
   const c=cs[0];let ok=false;
   if(SHIELDS.includes(c.act)){
@@ -2802,7 +2805,7 @@ function onDump(){act(async()=>{const p=me(),cs=selCards();if(cs.length!==1||cs[
   if(!S.lastSpecialWins&&p.hand.length===1){toast("ตั้งค่าไว้: การ์ดพิเศษเป็นใบสุดท้ายไม่ได้");return}
   await discardSpecial(p,cs[0]);sel.clear();if(!G.over)autoEnd(p)})}
 function autoEnd(p){G.autoEnding=true;setTimeout(()=>{G&&(G.autoEnding=false);if(G&&!G.over&&G.cur===p.idx&&humanDone){const r=humanDone;humanDone=null;sel.clear();r()}},650)}
-function onDraw(){act(async()=>{const p=me();if(p.turn.placed||p.turn.drew||p.turn.special)return;await flyCards($("#bDeck"),$("#hand"),[{back:true}],420);const before=new Set(p.hand);const n=drawCards(p,1);p.turn.drew=true;log(`${p.name} จั่ว 1 ใบ`);const c=p.hand.find(x=>!before.has(x));if(c)p.turn.drawnU=c.u;if(c){sel.clear();sel.add(c.u);toast(`จั่วได้ ${cardName(c)} — ถ้าลงได้ ลงต่อได้ทันที`,true)}})}
+function onDraw(){act(async()=>{const p=me();if(p.turn.placed||p.turn.drew||p.turn.special)return;await flyCards($("#bDeck"),$("#hand"),[{back:true}],420);const before=new Set(p.hand);const n=drawCards(p,1);p.turn.drew=true;log(`${p.name} จั่ว 1 ใบ`);const c=p.hand.find(x=>!before.has(x));if(c)p.turn.drawnU=c.u;if(c)toast(`จั่วได้ ${cardName(c)} (ป้าย “ใหม่”) — ลงได้ก็ลงต่อเลย ไม่งั้นกด PASS`,true)})}
 function onEnd(){if(!myTurn())return;const p=me();if(!(acted(p)||p.turn.drew))return;const r=humanDone;humanDone=null;sel.clear();r()}
 
 /* ---------- motion ---------- */
@@ -2922,7 +2925,7 @@ function renderGame(){
   ${v?`<div class="myzone${G.cur===v.idx&&!G.over?" turn":""}" data-seat="${v.idx}" style="--zc:${seatColor(v)}">
     <div class="l-mhead"><div class="l-mwho"><div class="l-av hum" style="--zc:${seatColor(v)}">${esc((v.name||"?").trim().slice(0,1).toUpperCase())}</div><b>มือของคุณ</b>${mh===v.idx?'<span class="l-tag m">ถือ MASTER</span>':""}${v.skip?'<span class="l-tag sk">โดน SKIP</span>':""}</div>
       <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
-    <div class="hand" id="hand">${(()=>{const f=fanCalc(v.hand.length);return v.hand.map((c,i)=>cardHTML(c,{selected:sel.has(c.u)}).replace(/^<div /,`<div style="${f(i)}" `)).join("")})()}</div>
+    <div class="hand" id="hand">${(()=>{const f=fanCalc(v.hand.length);const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;return v.hand.map((c,i)=>cardHTML(c,{selected:sel.has(c.u)}).replace(/^<div /,`<div style="${f(i)}" `).replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0)).join("")})()}</div>
     <div class="detail">${one&&ART[artKey(one)]?'<button class="btn sm" id="bZoom">🔍</button>':""}${canUse?'<button class="btn sm dumpbtn" id="bDump">🗑 ทิ้ง</button>':""}<span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
     <div class="mz-actions">
       <button class="act play" id="bPlay" ${canPlay?"":"disabled"}>▶ ลงกองกลาง${cs.length>1?` (${cs.length})`:""}</button>
