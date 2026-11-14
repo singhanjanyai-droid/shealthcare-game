@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="SHEALTHCARE">
 <meta name="theme-color" content="#0e2b29"><link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
-<style>body{padding-top:env(safe-area-inset-top)}.game{height:calc(100dvh - env(safe-area-inset-top))!important}</style>
+<style>body{padding-top:env(safe-area-inset-top)}.game:not(.lgame){height:calc(100dvh - env(safe-area-inset-top))!important}</style>
 <title>SHEALTHCARE · Endocrine Card Game</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Prompt:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Prompt:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
   --felt:#123634;--felt2:#0c2826;--ink:#eef5f2;--muted:#9fbab5;--line:rgba(255,255,255,.12);
@@ -574,6 +574,90 @@ html:has(.game),body:has(.game){overflow:hidden;height:100%}
 .game .scorebar{flex-wrap:nowrap;overflow:hidden}.game .scorebar .sc{min-width:0;padding:2px 9px;gap:5px;font-size:11.5px}.game .scorebar .sc>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.game .scorebar .sc b{font-size:13.5px}
 body:has(.game) #mbtn{display:none}
 @media (max-height:600px){.arena .deckbtn small{display:none}.myzone .hand .card{width:62px!important;height:86px!important}.myzone .hand{padding-top:16px}.arena .cplabel{display:none}}
+
+/* ===== L1 · Ivory Card Table (หน้าเล่นเกม) ===== */
+body:has(.lgame){background:#ecdfc6}
+.lgame{--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","Sukhumvit Set","Helvetica Neue","Noto Sans Thai",sans-serif;--sfr:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Noto Sans Thai",sans-serif;
+  position:relative;font-family:var(--sf);color:#1d2a28;background:radial-gradient(ellipse at 50% 0%,#fffaf0 0%,#f4ecdc 60%,#ecdfc6 100%);max-width:none!important;margin:0!important;position:fixed!important;inset:0;height:auto!important;z-index:5;padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom))!important;gap:8px!important}
+.lgame::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='53'%3E%3Cpath d='M15.5 0 L31 8.8 L31 26.5 L15.5 35.4 L0 26.5 L0 8.8 Z M15.5 35.4 L15.5 53' fill='none' stroke='%23d9c7a3' stroke-width='1'/%3E%3C/svg%3E");opacity:.5;pointer-events:none}
+.lgame>*{position:relative;z-index:1;width:100%;max-width:640px;margin-left:auto;margin-right:auto}
+.lgame .l-chip{background:#fff;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+.l-top{display:flex;align-items:center;gap:7px}
+.l-ib{width:38px;height:38px;flex:none;border-radius:12px;border:0;display:grid;place-items:center;color:#173c3b;padding:0;cursor:pointer}
+.l-brand{flex:1;min-width:0;line-height:1.15}.l-brand small{display:block;font:700 9.5px var(--sf);letter-spacing:1.6px;color:#9a7b3c}.l-brand b{font:800 16px var(--sf);color:#173c3b;letter-spacing:-.2px}
+.lgame .timer{height:38px;display:flex;align-items:center;padding:0 12px;border-radius:12px;border:0;background:#fff;color:#173c3b;font:800 16px var(--sfr);font-variant-numeric:tabular-nums;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+.lgame .timer.warn{background:#d6332b;color:#fff}
+.lgame .timer.final{background:#c2413a;color:#fff}
+.l-score{border-radius:18px;padding:7px 8px 8px}
+.l-sgrid{display:grid;gap:2px}
+.l-sc{display:flex;align-items:center;gap:6px;padding:4px 5px;border-radius:12px;min-width:0}
+.l-sc.me{background:linear-gradient(180deg,#fff6d8,#ffe9a6)}
+.l-av{width:26px;height:26px;flex:none;border-radius:13px;object-fit:contain;background:#fff;box-shadow:0 0 0 2px var(--zc)}
+.l-av.hum{display:grid;place-items:center;background:var(--zc);color:#fff;font:800 12px var(--sf);box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--zc)}
+.l-sc.me .l-av.hum{box-shadow:0 0 0 2px #fff,0 0 0 4px #f6b62a}
+.l-sct{min-width:0}.l-rk{font:700 10px var(--sf);color:#8a7a62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.l-sc.me .l-rk{color:#9a6a00;font-weight:800}
+.l-pt{font:800 16px var(--sfr);font-variant-numeric:tabular-nums;color:#173c3b;line-height:1.05;white-space:nowrap}.l-sc.me .l-pt{font-size:18px}
+.l-sc.bump .l-pt{animation:lbump .7s ease}
+@keyframes lbump{30%{transform:scale(1.25);color:#c47a00}}
+.l-bar{display:flex;gap:2px;height:5px;margin-top:6px}.l-bar i{border-radius:3px}
+.l-table{flex:1 1 0;min-height:0;border-radius:24px;background:#f4e3c1;padding:7px;box-sizing:border-box;box-shadow:0 16px 36px rgba(60,40,10,.26),0 0 0 1px rgba(120,90,40,.25)}
+.l-table.hastop{margin-top:26px!important}
+.l-felt{position:relative;height:100%;border-radius:18px;overflow:hidden;container-type:size;color:#fff;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 42%,#326864 0%,#1f4846 55%,#163a38 100%)}
+.l-felt::before{content:"";position:absolute;inset:6px;border-radius:13px;border:1px solid rgba(246,182,42,.45);pointer-events:none}
+.l-sp{position:absolute;width:14px;height:14px;opacity:.8;background:#e8cf86;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}.l-sp.s{width:11px;height:11px}
+.l-bars{position:absolute;left:0;right:0;bottom:4px;display:flex;justify-content:center;gap:4px}.l-bars i{width:20px;height:4px;border-radius:2px;background:#25b0ad}.l-bars i:nth-child(2){background:#f4a93b}.l-bars i:nth-child(3){background:#b5e14a}.l-bars i:nth-child(4){background:#f2585c}
+.l-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 0 18px}
+.l-turn{position:relative;z-index:20;padding:4px 12px;border-radius:12px;background:rgba(0,0,0,.28);color:#fff;font:800 12.5px var(--sf);white-space:nowrap}
+.l-turn.mine{background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 0 18px rgba(246,182,42,.6);animation:pulse 1.2s ease-in-out infinite}
+.l-felt .cpile,.l-felt .cpile .pc{width:auto!important;aspect-ratio:744/1039;height:clamp(60px,calc(100cqh - 150px),196px)!important}
+.l-felt .cpile{margin:2px 0!important}
+.l-felt .cplabel{font:500 11.5px var(--sf);color:#d8e7e5;white-space:nowrap}.l-felt .cplabel b{color:#fff}
+.l-dchips{display:flex;gap:7px}
+.l-dchip{display:flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border-radius:10px;border:0;background:rgba(0,0,0,.28);color:#fff;font:700 12px var(--sf);cursor:pointer}
+.l-dchip img{width:19px;height:27px;border-radius:3px}.l-dchip img.away{opacity:.35}
+.l-dchip.glow{background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 0 14px rgba(246,182,42,.7);animation:pulse 1.2s ease-in-out infinite}
+.l-hist{max-width:min(300px,62cqw);font:500 11px var(--sf);color:#d8e7e5;background:rgba(0,0,0,.22);padding:3px 10px;border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.l-hist b{color:#fff}
+@container (max-height:300px){.l-hist{display:none}.l-felt .cplabel{display:none}}
+.l-seat{color:#fff}
+.l-sav{width:40px;height:40px;flex:none;border-radius:20px;object-fit:contain;background:#fff;box-shadow:0 0 0 2px var(--zc)}
+.l-sav.hum{display:grid;place-items:center;background:var(--zc);color:#fff;font:800 17px var(--sf)}
+.l-seat.turn .l-sav{box-shadow:0 0 0 3px #ff8a7a,0 0 16px rgba(255,138,122,.9)}
+.l-nm{font:700 11.5px var(--sf);white-space:nowrap;max-width:84px;overflow:hidden;text-overflow:ellipsis}
+.l-st{font:700 10.5px var(--sf);white-space:nowrap}.l-st.think{color:#ff8a7a}.l-st.m{color:#c99a2e}.l-st.sk{color:#7aa7ff}
+.l-backs{position:relative;display:inline-flex;align-items:center;height:30px;padding-right:12px}
+.l-backs img{width:19px;height:27px;border-radius:3px;margin-left:-11px;box-shadow:-1px 1px 3px rgba(0,0,0,.4)}.l-backs img:first-child{margin-left:0}
+.l-cnt{position:absolute;right:-4px;top:2px;min-width:20px;height:20px;padding:0 4px;box-sizing:border-box;border-radius:10px;background:#fff;color:#173c3b;font:800 12px var(--sfr);display:grid;place-items:center}
+.l-seat.side{position:absolute;top:50%;transform:translateY(-50%);width:84px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:3px}
+.l-seat.side.left{left:6px}.l-seat.side.right{right:6px}
+.l-seat.top{position:absolute;left:50%;top:-24px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:9px;padding:4px 14px 4px 4px;border-radius:30px;background:#fff;color:#173c3b;white-space:nowrap;width:max-content;
+  box-shadow:0 0 0 2px var(--zc),0 10px 22px rgba(70,50,15,.22)}
+.l-seat.top.turn{box-shadow:0 0 0 2.5px #ff8a7a,0 0 18px rgba(255,138,122,.6),0 10px 22px rgba(70,50,15,.22)}
+.l-seat.top .l-sav{width:36px;height:36px}.l-seat.top .l-nm{font-size:13px;font-weight:800;max-width:none}.l-seat.top .l-st.think{color:#d9483b}
+.l-seat.top .l-nmw{display:flex;flex-direction:column}
+.l-seat.top .l-cnt{background:#173c3b;color:#fff}
+.l-seat .bubble{top:-16px;right:-10px}
+.l-seat.side .bubble{top:-24px;left:50%;right:auto;transform:translateX(-50%);max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l-seat.side.left .bubble{left:0;transform:none}.l-seat.side.right .bubble{left:auto;right:0;transform:none}
+.lgame .myzone{background:none!important;border:0!important;box-shadow:none!important;padding:2px 0 0!important;border-radius:0}
+.lgame .myzone.turn{animation:none}
+.l-mhead{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.l-mwho{display:flex;align-items:center;gap:7px;min-width:0}.l-mwho b{font:800 15px var(--sf);color:#173c3b;white-space:nowrap}
+.l-tag{font:800 10px var(--sf);padding:2px 7px;border-radius:7px;white-space:nowrap}.l-tag.m{background:#ffe9a6;color:#7a4f00}.l-tag.sk{background:#dbe7ff;color:#24408a}
+.l-mstat{display:flex;gap:5px}.l-mstat .l-chip{padding:3px 9px;border-radius:9px;font:700 11.5px var(--sf);color:#6b5a3c;white-space:nowrap}
+.lgame .myzone .hand .card{box-shadow:0 6px 14px rgba(60,40,10,.25)}
+.lgame .myzone .hand .card.sel{box-shadow:0 0 0 3px #f6b62a,0 12px 22px rgba(60,40,10,.35)}
+.lgame .myzone .detail{background:#fff;color:#1d2a28;box-shadow:0 6px 16px rgba(70,50,15,.10),0 0 0 1px rgba(70,50,15,.06);border-radius:12px;font-family:var(--sf)}
+.lgame .hintln{color:#7a5a12}
+.lgame .detail .btn{background:#f3ead7;color:#173c3b;border:0;box-shadow:none}
+.lgame .detail .dumpbtn{background:#6b7177!important;color:#fff!important}
+.lgame .mz-actions .act{height:48px;padding:0 6px;border-radius:24px;border:0;background:#fff;color:#173c3b;font:800 15px var(--sf);box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+.lgame .mz-actions .act:disabled{opacity:1;background:#efe6d4;color:#b4a68b;box-shadow:none}
+.lgame .mz-actions .act.play:not(:disabled),.lgame .mz-actions .act.spc:not(:disabled){background:linear-gradient(180deg,#2f6d68,#173c3b);color:#ffe9a8;box-shadow:0 0 0 2px #f6b62a,0 8px 18px rgba(23,60,59,.35)}
+.lgame .mz-actions .act.mas{background:#efe2ff;color:#4b2a8a}
+.lgame .mz-actions .act.end:not(:disabled){background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 8px 18px rgba(240,164,23,.35)}
+@media (max-height:700px){.l-score{padding:5px 7px 6px}.l-av{width:22px;height:22px}.l-pt{font-size:14px}.l-sc.me .l-pt{font-size:16px}.l-mstat .l-chip:first-child{display:none}}
 </style>
 </head>
 <body>
@@ -2741,29 +2825,51 @@ function renderGame(){
   const det=one?(one.kind==="special"?`<b>${SP[one.act].name}</b> (HP ${HPof(one)}) — ${esc(SP[one.act].body)}`:one.kind==="hormone"?`<b>${esc(HM[one.hid].abbr)}</b> · ${esc(HM[one.hid].full)} — ${esc(HM[one.hid].fn.replace(/\n/g," "))}`:`<b>${esc(GL[one.gid].en)}</b> · ${esc(GL[one.gid].th)} — การ์ดเปลี่ยนต่อม`)
     :cs.length?`เลือก ${cs.length} ใบ: ${esc(cs.map(cardName).join(" + "))}`:"";
   const banner=G.over?`🏆 ${esc(G.winner.name)} ชนะ!`:G.viewer===null?"ส่งเครื่อง…":cur.idx===G.viewer?"✨ ตาของคุณ!":G.thinking&&G.thinking.idx===cur.idx?`🤔 ${esc(cur.name)} กำลังคิดจะลงอะไร<span class="dots"><i></i><i></i><i></i></span>`:`ตาของ ${esc(cur.name)}`;
-  $("#app").innerHTML=`<div class="game">
-  <div class="g-top"><div class="brand sm">SHEALTHCARE</div>
-    <div class="hdr-btns">${timerHTML()}<button class="btn sm" id="bMus" title="เพลง/เสียง">🎵</button><button class="btn sm" id="bRules">กติกา</button><button class="btn sm" id="bQuit">☰</button></div></div>
-  <div class="scorebar">${G.players.slice().sort((a,b)=>(b.score||0)-(a.score||0)).map((p,i)=>`<div class="sc${i===0&&(p.score||0)>0?" lead":""}${G.lastScore&&G.lastScore.idx===p.idx&&Date.now()-G.lastScore.t<2500?" bump":""}" style="--zc:${seatColor(p)}"><span>${i===0&&(p.score||0)>0?"👑":""}${p.human?"🧑":`<img class="scava" src="${IMG[charOf(p)]}" alt="">`} ${esc(p.name.replace(/^บอท\s*/,""))}</span><b>${(p.score||0).toLocaleString()}</b>${G.lastScore&&G.lastScore.idx===p.idx&&Date.now()-G.lastScore.t<2500?`<em>+${G.lastScore.pts}</em>`:""}</div>`).join("")}</div>
-  <div class="opps3">${others.map(p=>{const turn=G.cur===p.idx&&!G.over;return`<div class="oseat${turn?" turn":""}" data-seat="${p.idx}" style="--zc:${seatColor(p)}">
-     ${avaHTML(p)}<div class="oinfo"><div class="onm">${esc(p.name)} ${mh===p.idx?'<span class="badge">MASTER</span>':""}${p.skip?'<span class="badge sk">SKIP</span>':""}</div>
-     <div class="obacks">${backsHTML(p.hand.length)}<span class="ocount">${p.hand.length}</span></div></div>
-     ${turn?'<div class="bubble think"><i></i><i></i><i></i></div>':G.lastAct[p.idx]?`<div class="bubble">${esc(G.lastAct[p.idx])}</div>`:""}</div>`}).join("")}</div>
-  <div class="arena">
-    <div class="center2">
-      <div class="turnbanner${cur.idx===G.viewer&&!G.over?" mine":""}" style="--zc:${seatColor(cur)}">${banner}</div>
-      <div class="cpile" id="pTop">${G.flying?pileHTML().replace('class="pc top"','class="pc"'):pileHTML()}</div>
-      <div class="cplabel">${ref?`ต่อจาก <b>${esc(cardName(ref))}</b>${top&&top.kind==="special"?" (ใต้การ์ดพิเศษ)":""}`:""}</div>
-      <div class="lastcap" id="bHist">${G.plays[0]?`<b>${esc(G.plays[0].who)}</b> ${esc(G.plays[0].text)} ▸`:'ใบแรกเปิดจากกองจั่ว'}</div>
+  const others3=others.slice(0,3);
+  const seatHTML=(p,pos)=>{const turn=G.cur===p.idx&&!G.over;const n=p.hand.length;
+    const backs=`<span class="l-backs">${Array.from({length:Math.min(n,4)},()=>`<img src="${ART.back||""}" alt="">`).join("")}<b class="l-cnt">${n}</b></span>`;
+    const st=turn?`<span class="l-st think">กำลังคิด…</span>`:(mh===p.idx?'<span class="l-st m">ถือ MASTER</span>':p.skip?'<span class="l-st sk">โดน SKIP</span>':"");
+    const bub=!turn&&G.lastAct[p.idx]?`<div class="bubble">${esc(G.lastAct[p.idx])}</div>`:"";
+    const av=p.human?`<div class="l-sav hum">${esc((p.name||"?").trim().slice(0,1).toUpperCase())}</div>`:`<img class="l-sav" src="${IMG[charOf(p)]}" alt="">`;
+    return pos==="top"?`<div class="l-seat top${turn?" turn":""}" data-seat="${p.idx}" style="--zc:${seatColor(p)}">${av}<div class="l-nmw"><div class="l-nm">${esc(p.name.replace(/^บอท\s*/,""))}</div>${st}</div>${backs}${bub}</div>`
+      :`<div class="l-seat side ${pos}${turn?" turn":""}" data-seat="${p.idx}" style="--zc:${seatColor(p)}">${av}<div class="l-nm">${esc(p.name.replace(/^บอท\s*/,""))}</div>${st}${backs}${bub}</div>`};
+  const ranked=G.players.slice().sort((a,b)=>(b.score||0)-(a.score||0));
+  const tot=ranked.reduce((x,p)=>x+Math.max(0,p.score||0),0);
+  const scoreHTML=`<div class="l-score l-chip"><div class="l-sgrid" style="grid-template-columns:${ranked.map(p=>v&&p.idx===v.idx?"1.3fr":"1fr").join(" ")}">${ranked.map((p,i)=>{const meC=v&&p.idx===v.idx;const bump=G.lastScore&&G.lastScore.idx===p.idx&&Date.now()-G.lastScore.t<2500;
+      const av=p.human?`<div class="l-av hum" style="--zc:${seatColor(p)}">${esc((p.name||"?").trim().slice(0,1).toUpperCase())}</div>`:`<img class="l-av" style="--zc:${seatColor(p)}" src="${IMG[charOf(p)]}" alt="">`;
+      return`<div class="l-sc${meC?" me":""}${bump?" bump":""}">${av}<div class="l-sct"><div class="l-rk">${i===0&&(p.score||0)>0?"♛ ":""}${meC?"คุณ":"ที่ "+(i+1)}</div><div class="l-pt">${(p.score||0).toLocaleString()}</div></div></div>`}).join("")}</div>
+    <div class="l-bar">${ranked.map(p=>`<i style="flex:${tot?Math.max(.04,Math.max(0,p.score||0)/tot):1};background:${seatColor(p)}"></i>`).join("")}</div></div>`;
+  const turnChip=G.over?`🏆 ${esc(G.winner.name)} ชนะ!`:G.viewer===null?"ส่งเครื่อง…":cur.idx===G.viewer?"✨ ตาของคุณ!":`ตาของ ${esc(cur.name.replace(/^บอท\s*/,""))}`;
+  $("#app").innerHTML=`<div class="game lgame">
+  <div class="l-top">
+    <button class="l-ib l-chip" id="bQuit" aria-label="เมนู"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="l-brand"><small>ENDOCRINE GAME</small><b>SHEALTHCARE</b></div>
+    ${timerHTML()}
+    <button class="l-ib l-chip" id="bRules" aria-label="กติกา"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 7h6M8 11h6"/></svg></button>
+    <button class="l-ib l-chip" id="bMus" aria-label="เพลงและเสียง"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>
+  </div>
+  ${scoreHTML}
+  <div class="l-table${others3.length?" hastop":""}">
+    <div class="l-felt">
+      <i class="l-sp" style="left:16px;top:40px"></i><i class="l-sp s" style="right:20px;bottom:46px"></i>
+      ${others3[1]?seatHTML(others3[1],"left"):""}${others3[2]?seatHTML(others3[2],"right"):""}
+      <div class="l-center">
+        <div class="l-turn${cur.idx===G.viewer&&!G.over?" mine":""}">${turnChip}</div>
+        <div class="cpile" id="pTop">${G.flying?pileHTML().replace('class="pc top"','class="pc"'):pileHTML()}</div>
+        <div class="cplabel">${ref?`ต่อจาก <b>${esc(cardName(ref))}</b>${top&&top.kind==="special"?" (ใต้การ์ดพิเศษ)":""}`:""}</div>
+        <div class="l-dchips">
+          <button class="l-dchip${canDraw?" glow":""}" id="bDeck" ${canDraw?"":"aria-disabled=true"}><img src="${ART.back||""}" alt=""><span>${canDraw?"แตะจั่ว":"จั่ว"} · ${G.deck.length}</span></button>
+          <button class="l-dchip" id="bKey2"><img class="${mh!=null?"away":""}" src="${ART.mback||""}" alt=""><span>Master${mh==null?"":" · "+esc(G.players[mh].name.replace(/^บอท\s*/,""))}</span></button>
+        </div>
+        <div class="l-hist" id="bHist">${G.plays[0]?`<b>${esc(G.plays[0].who)}</b> ${esc(G.plays[0].text)} ▸`:'ใบแรกเปิดจากกองจั่ว'}</div>
+      </div>
+      <div class="l-bars"><i></i><i></i><i></i><i></i></div>
     </div>
-    <div class="side">
-      <button class="deckbtn${canDraw?" glow":""}" id="bDeck" ${canDraw?"":"aria-disabled=true"}><img src="${ART.back||""}" alt=""><span>${canDraw?"แตะเพื่อจั่ว":"กองจั่ว"}</span><small>${G.deck.length} ใบ</small></button>
-      <button class="deckbtn" id="bKey2"><img class="${mh!=null?"away":""}" src="${ART.mback||""}" alt=""><span>Master</span><small>${mh==null?"กลางโต๊ะ":esc(G.players[mh].name)}</small></button>
-    </div>
+    ${others3[0]?seatHTML(others3[0],"top"):""}
   </div>
   ${v?`<div class="myzone${G.cur===v.idx&&!G.over?" turn":""}" data-seat="${v.idx}" style="--zc:${seatColor(v)}">
-    <div class="mz-head">${avaHTML(v)}<div><div class="onm">${esc(v.name)} · ${v.hand.length} ใบ <span class="hp">HP ${handHP(v)}</span> ${mh===v.idx?'<span class="badge">ถือ MASTER</span>':""}${v.skip?'<span class="badge sk">โดน SKIP</span>':""}</div>
-      <div class="note">ลงชุดครบ ${v.setGlands.size}/3 ต่อม ${v.gotFree?"✓":"→ ดู Master ฟรี"}</div></div></div>
+    <div class="l-mhead"><div class="l-mwho"><div class="l-av hum" style="--zc:${seatColor(v)}">${esc((v.name||"?").trim().slice(0,1).toUpperCase())}</div><b>มือของคุณ</b>${mh===v.idx?'<span class="l-tag m">ถือ MASTER</span>':""}${v.skip?'<span class="l-tag sk">โดน SKIP</span>':""}</div>
+      <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
     <div class="hand" id="hand">${(()=>{const f=fanCalc(v.hand.length);return v.hand.map((c,i)=>cardHTML(c,{selected:sel.has(c.u)}).replace(/^<div /,`<div style="${f(i)}" `)).join("")})()}</div>
     <div class="detail">${one&&ART[artKey(one)]?'<button class="btn sm" id="bZoom">🔍</button>':""}${canUse?'<button class="btn sm dumpbtn" id="bDump">🗑 ทิ้ง</button>':""}<span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
     <div class="mz-actions">
