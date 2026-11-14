@@ -658,6 +658,58 @@ body:has(.lgame){background:#ecdfc6}
 .lgame .mz-actions .act.mas{background:#efe2ff;color:#4b2a8a}
 .lgame .mz-actions .act.end:not(:disabled){background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 8px 18px rgba(240,164,23,.35)}
 @media (max-height:700px){.l-score{padding:5px 7px 6px}.l-av{width:22px;height:22px}.l-pt{font-size:14px}.l-sc.me .l-pt{font-size:16px}.l-mstat .l-chip:first-child{display:none}}
+
+/* ===== ธีมครีม L1 ทุกหน้า ===== */
+body{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='53'%3E%3Cpath d='M15.5 0 L31 8.8 L31 26.5 L15.5 35.4 L0 26.5 L0 8.8 Z M15.5 35.4 L15.5 53' fill='none' stroke='%23d9c7a3' stroke-width='1'/%3E%3C/svg%3E") 0 0/31px 53px,radial-gradient(ellipse at 50% 0%,#fffaf0 0%,#f4ecdc 60%,#ecdfc6 100%) fixed!important;background-color:#f4ecdc!important}
+body::before{content:"";position:fixed;inset:0;background:rgba(244,236,220,.5);pointer-events:none;z-index:-1}
+.bgfx{display:none!important}
+#mbtn{background:#fff!important;color:#173c3b!important;border:0!important;box-shadow:0 6px 16px rgba(70,50,15,.18),0 0 0 1px rgba(70,50,15,.08)!important}
+.l-sp{position:absolute;width:16px;height:16px;opacity:.85;background:#c9a24a;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);pointer-events:none}.l-sp.s{width:12px;height:12px}
+.l-felt .l-sp,.t2-felt .l-sp{background:#e8cf86}
+.s1{--sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","Sukhumvit Set","Helvetica Neue","Noto Sans Thai",sans-serif;min-height:100vh;min-height:100dvh;justify-content:center;padding-bottom:40px;cursor:pointer;font-family:var(--sf)}
+.s1-center{display:flex;flex-direction:column;align-items:center;animation:empop 1s cubic-bezier(.2,1.5,.4,1) .15s both}
+.s1-med{width:clamp(140px,44vw,176px);aspect-ratio:1;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 10px rgba(255,255,255,.55),0 0 60px rgba(246,182,42,.45),0 22px 40px rgba(70,50,15,.22)}
+.s1-med img{width:91%;height:91%}
+.s1-brand{margin-top:34px;font:900 clamp(34px,11vw,46px)/1 var(--sf);letter-spacing:1px;color:#173c3b}
+.s1-line{margin-top:10px;width:120px;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,#f6b62a,transparent)}
+.s1-pres{margin-top:10px;font:700 13px var(--sf);letter-spacing:9px;padding-left:9px;color:#9a7b3c}
+.s1-tap{margin-top:clamp(40px,9vh,90px);display:flex;flex-direction:column;align-items:center;gap:12px}
+.s1-btn,.t2 .cbtn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:250px;height:58px;border-radius:29px;font:800 20px var(--sf,system-ui);text-decoration:none}
+.s1-btn{background:linear-gradient(180deg,#2f6d68,#173c3b);color:#ffe9a8;box-shadow:0 0 0 2.5px #f6b62a,0 12px 24px rgba(23,60,59,.35);animation:pulse 1.3s ease-in-out infinite}
+.s1-tap small{font:600 13px var(--sf);color:#8a7a62}
+.t2{--sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","Sukhumvit Set","Helvetica Neue","Noto Sans Thai",sans-serif;font-family:var(--sf);justify-content:flex-start;min-height:100vh;min-height:100dvh;padding:max(14px,env(safe-area-inset-top)) 0 0;gap:0}
+.t2-head{align-self:stretch;display:flex;align-items:center;gap:9px;padding:4px 18px}.t2-head img{width:36px;height:36px}.t2-head span{font:800 11px var(--sf);letter-spacing:2.4px;color:#173c3b}
+.t2-title{display:flex;flex-direction:column;align-items:center;margin-top:10px}
+.t2-title small{font:700 13px var(--sf);letter-spacing:6px;padding-left:6px;color:#9a7b3c}
+.t2-title b{margin-top:6px;font:900 clamp(42px,14vw,58px)/1 var(--sf);color:#173c3b}
+.t2-title span{margin-top:6px;font:700 17px var(--sf);color:#4b5f5c}
+.t2-fan{position:relative!important;z-index:5!important;margin-top:6px}
+.t2-sheet{position:relative;z-index:1;align-self:stretch;flex:1;margin:-120px auto 0;width:100%;max-width:640px;border-radius:40px 40px 0 0;background:#f4e3c1;padding:8px 8px 0;box-shadow:0 -12px 34px rgba(60,40,10,.18);display:flex}
+.t2-felt{position:relative;flex:1;border-radius:32px 32px 0 0;background:radial-gradient(ellipse at 50% 20%,#346a66 0%,#1f4846 55%,#133432 100%);display:flex;flex-direction:column;align-items:center;gap:12px;padding:136px 12px max(18px,env(safe-area-inset-bottom));overflow:hidden}
+.t2-felt::before{content:"";position:absolute;left:7px;right:7px;top:7px;bottom:-10px;border-radius:26px 26px 0 0;border:1px solid rgba(246,182,42,.45);pointer-events:none}
+.t2-chars{display:flex;gap:2px;padding:5px 10px;border-radius:18px;background:rgba(0,0,0,.22)}
+.t2-chars img{width:36px;height:36px;object-fit:contain;animation:hop 1.1s cubic-bezier(.3,0,.4,1) infinite}.t2-chars img:nth-child(2n){animation-delay:-.3s}.t2-chars img:nth-child(3n){animation-delay:-.6s}
+.t2-stats{display:flex;gap:8px}
+.t2-stat{display:flex;flex-direction:column;align-items:center;min-width:92px;padding:7px 6px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(244,227,193,.25)}
+.t2-stat b{font:900 20px/1 var(--sf);color:#ffd864}.t2-stat span{margin-top:3px;font:600 11.5px var(--sf);color:#e8dcc2}
+.t2 .lbar2{margin-top:0;height:12px;border-width:1.5px}
+.t2 .ltxt{margin-top:-6px;font:600 12.5px var(--sf);color:#e8dcc2}
+.t2 .lgo{height:60px;margin-top:0}
+.t2 .cbtn{border:0;background:linear-gradient(180deg,#ffe59a,#f0a417);color:#3a2600;box-shadow:0 0 0 2.5px #fff3c4,0 12px 24px rgba(0,0,0,.35)}
+.t2-foot{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:8px;color:#fbf1df}.t2-foot span{font:700 12px var(--sf);letter-spacing:6px;padding-left:6px}
+.t2-bars{display:flex;gap:5px}.t2-bars i{display:block;width:24px;height:5px;border-radius:3px;background:#25b0ad}.t2-bars i:nth-child(2){background:#f4a93b}.t2-bars i:nth-child(3){background:#b5e14a}.t2-bars i:nth-child(4){background:#f2585c}
+@media (max-height:720px){.t2-title b{font-size:42px}.t2-title span{display:none}.t2-fan{height:210px!important}.t2-fan .fc{width:98px!important;height:137px!important}.t2-fan .fc0{left:calc(50% - 112px)!important;top:36px!important}.t2-fan .fc2{left:calc(50% + 14px)!important;top:36px!important}.t2-fan .fc1{left:calc(50% - 58px)!important;top:12px!important;width:116px!important;height:162px!important}.t2-sheet{margin-top:-90px}.t2-felt{padding-top:100px;gap:9px}.t2-stat{padding:5px 6px}}
+/* หน้าเลือกโหมด / ผู้เล่น / ตั้งค่า บนพื้นครีม */
+.chead-l span{color:#173c3b!important}
+.ct-main{color:#173c3b!important;text-shadow:0 3px 0 #f6b62a!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Noto Sans Thai",sans-serif!important;font-weight:900!important}
+.ct-pill{background:#fff!important;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+.namepill{background:#fff!important;border:0!important;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+.namepill span{color:#8a7a62!important}.namepill input{background:#f4ecdc!important;color:#173c3b!important}
+.musicchip{background:#fff!important;border:0!important;color:#173c3b!important;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}.musicchip b{color:#9a6a00!important}
+.modescreen2>.note,.cscreen>.note{color:#6b5a3c!important}
+.modescreen2 .mtop .btn,header .btn{background:#fff!important;color:#173c3b!important;border:0!important;box-shadow:0 6px 16px rgba(70,50,15,.12),0 0 0 1px rgba(70,50,15,.06)}
+header .brand{color:#173c3b!important}header .brand small{color:#9a7b3c!important}
+.panel{background:linear-gradient(180deg,#24504d,#173c3b)!important;border:4px solid #f4e3c1!important;box-shadow:0 12px 26px rgba(60,40,10,.22)}
 </style>
 </head>
 <body>
@@ -3133,13 +3185,15 @@ function go(sc){screen=sc;window.scrollTo(0,0);setTimeout(musicForScreen,0);({sp
 function renderSetup(){go(artReady?"mode":"loading")}
 const BOTNAMES=["บอท (สุ่ม)","บอท (สุ่ม)","บอท (สุ่ม)","บอท (สุ่ม)"];
 function renderSplash(){
-  $("#app").innerHTML=`<div class="screen splash2" id="spl">${bgfx(true)}
-    <div class="sp-center">
-      <div class="emblem2"><img src="${GLAND_ICON}" alt=""></div>
-      <div class="sp-brand">SHEALTHCARE</div>
-      <div class="sp-pres">presents</div>
+  $("#app").innerHTML=`<div class="screen s1" id="spl">
+    <i class="l-sp" style="left:10%;top:17%"></i><i class="l-sp s" style="right:12%;top:25%"></i><i class="l-sp s" style="left:8%;top:62%"></i><i class="l-sp" style="right:10%;top:66%"></i>
+    <div class="s1-center">
+      <div class="s1-med"><img src="${GLAND_ICON}" alt="Endocrine gland"></div>
+      <div class="s1-brand">SHEALTHCARE</div>
+      <div class="s1-line"></div>
+      <div class="s1-pres">PRESENTS</div>
     </div>
-    <div class="sp-tap"><span class="tapbtn">▶ แตะเพื่อเริ่ม</span><small>🎵 เพลงจะเริ่มเมื่อแตะ</small></div></div>`;
+    <div class="s1-tap"><span class="s1-btn"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" fill="#ffd864"/></svg>แตะเพื่อเริ่ม</span><small>เพลงจะเริ่มเมื่อแตะ</small></div></div>`;
   let done=false;const next=()=>{if(done)return;done=true;unlockAudio();go("loading")};
   $("#spl").onclick=next;
 }
@@ -3164,14 +3218,20 @@ function arcStage(scale=1){
 function titleHTML(sm){const w="ENDOCRINE";return`<div class="ttl${sm?" sm":""}"><div class="ttl-main">${[...w].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join("")}</div><div class="ribbon"><span>GAME CARD</span></div></div>`}
 function charsHTML(big){return`<div class="chars${big?" big":""}">${D.glands.map((g,i)=>`<img src="${IMG[g.id]}" alt="${esc(g.en)}" style="animation-delay:${(i%5)*-.18}s;animation-duration:${.7+(i%3)*.15}s">`).join("")}</div>`}
 async function renderLoading(){
-  $("#app").innerHTML=`<div class="screen cscreen">${bgfx()}
-    ${cardHeader()}
-    ${cardTitle()}
-    <div class="cfan" id="fan">${fanCards()}</div>
-    ${charRow()}
-    <div class="lbar2"><div class="lfill2" id="lfill"></div></div><div class="ltxt" id="ltxt">กำลังโหลดการ์ด… 0%</div>
-    <div id="lgo" class="lgo"></div>
-    ${cardFooter()}</div>`;
+  const bars='<div class="t2-bars"><i></i><i></i><i></i><i></i></div>';
+  const st=(n,l)=>`<div class="t2-stat"><b>${n}</b><span>${l}</span></div>`;
+  $("#app").innerHTML=`<div class="screen t2">
+    <div class="t2-head"><img src="${GLAND_ICON}" alt=""><span>• ENDOCRINE GLAND</span></div>
+    <div class="t2-title"><small>SHEALTHCARE</small><b>ENDOCRINE</b><span>เกมการ์ดต่อมไร้ท่อ</span></div>
+    <div class="cfan t2-fan" id="fan">${fanCards()}</div>
+    <div class="t2-sheet"><div class="t2-felt">
+      <i class="l-sp" style="left:22px;top:34px"></i><i class="l-sp s" style="right:26px;top:64px"></i>
+      <div class="t2-chars">${["pin","post","para","thym","hyp","gon","ant"].map(g=>`<img src="${IMG[g]}" alt="${esc(GL[g].en)}">`).join("")}</div>
+      <div class="t2-stats">${st(D.glands.length,"ต่อมไร้ท่อ")}${st(D.hormones.length,"ฮอร์โมน")}${st("2–5","ผู้เล่น")}</div>
+      <div class="lbar2"><div class="lfill2" id="lfill"></div></div><div class="ltxt" id="ltxt">กำลังโหลดการ์ด… 0%</div>
+      <div id="lgo" class="lgo"></div>
+      <div class="t2-foot"><span>UNIVERSAL CARD</span>${bars}</div>
+    </div></div></div>`;
   const t0=Date.now();let shown=0;
   const setP=p=>{shown=Math.max(shown,p);const f=$("#lfill"),t=$("#ltxt");if(f)f.style.width=shown+"%";if(t)t.textContent=`กำลังโหลดการ์ด… ${Math.round(shown)}%`};
   if(!artReady){if(!artBuilding)artBuilding=buildArt((i,n)=>setP(i/n*90)).finally(()=>{artBuilding=null});await artBuilding}
