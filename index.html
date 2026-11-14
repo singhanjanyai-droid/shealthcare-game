@@ -2166,11 +2166,25 @@ function studioCard(deck,tk,re,eid,layout){
   if(!c){c=st.newCard({typeId:t.id,layout:t.layout});if(e)st.applyEntry(c,e)}
   return c;
 }
+// รอฟอนต์การ์ดโหลดครบจริง (กันตัวหนังสือบนการ์ดลอย/ล้นกรอบ ถ้าฟอนต์มาช้ากลางคันวาด)
+async function fontsSettled(deck){
+  const fams=[...new Set([deck.font1,deck.font2,"Prompt","Kanit"].filter(Boolean))];
+  const specs=[];fams.forEach(f=>[400,500,600,700,800].forEach(w=>specs.push(`${w} 30px "${f}"`)));
+  await Promise.race([Promise.all(specs.map(f=>document.fonts.load(f,"กขคเลือกAa1").catch(()=>{}))),new Promise(r=>setTimeout(r,6000))]);
+  if(document.fonts.ready)await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,4000))]);
+}
+let artFontWatch=false;
+function watchLateFonts(){ // ถ้าฟอนต์โหลดเสร็จทีหลัง วาดการ์ดใหม่อีกครั้งให้ตรง
+  if(artFontWatch||!document.fonts||!document.fonts.addEventListener)return;artFontWatch=true;let t=null;
+  let n=0;document.fonts.addEventListener("loadingdone",()=>{if(!artReady||n>=2)return;n++;clearTimeout(t);t=setTimeout(async()=>{artReady=false;try{await buildArt()}catch(e){}if(G&&inGame())renderGame()},400)});
+}
 async function buildArt(progress){
+  watchLateFonts();
   const st=window.__studio;if(!st)return false;
   try{const e=(st.DATA_LIB.def||[]).find(x=>x.id==="x-swap");if(e)e.body="เลือกเพื่อน 1 คน สลับการ์ดในมือทั้งหมดกัน"}catch(e){}
   st.setDeck(studioDeck());const deck=st.getDeck();
   try{await st.fontsReady()}catch(e){}
+  try{await fontsSettled(deck)}catch(e){}
   try{await document.fonts.ready}catch(e){}
   const jobs=[];
   D.glands.forEach(g=>jobs.push(["g-"+g.id,()=>studioCard(deck,"gland",/gland|ต่อม/i,"g-"+g.id)]));
