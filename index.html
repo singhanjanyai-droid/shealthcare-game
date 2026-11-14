@@ -620,6 +620,19 @@ body:has(.lgame){background:#ecdfc6}
 .l-hist{max-width:min(300px,62cqw);font:500 11px var(--sf);color:#d8e7e5;background:rgba(0,0,0,.22);padding:3px 10px;border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .l-hist b{color:#fff}
 .lgame .hand .card.newd::after{content:"ใหม่";position:absolute;top:-9px;left:50%;transform:translateX(-50%);padding:1px 8px;border-radius:8px;background:#d9483b;color:#fff;font:800 10.5px var(--sf);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:3}
+.lgame .myzone .hand .seltray{position:relative;flex:none;margin-left:14px;height:var(--ch,100px);align-self:flex-end}
+.lgame .myzone .hand .seltray .card{position:absolute;top:-16px;margin:0!important;transform:none!important}
+.lgame .seltag{position:absolute;top:-26px;right:-8px;z-index:90;min-width:22px;height:22px;padding:0 5px;box-sizing:border-box;border-radius:11px;background:#f6b62a;color:#3a2600;font:800 12px var(--sfr);display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.lgame .myzone .hand{--ch:100px}@media (min-width:561px){.lgame .myzone .hand{--ch:120px}}@media (max-height:600px){.lgame .myzone .hand{--ch:86px}}
+.bigcard.fit{width:auto;max-width:min(94vw,640px);max-height:calc(100dvh - 190px);height:auto;aspect-ratio:auto}
+.ov:has(.bigcard.fit) .modal{padding:10px;background:rgba(20,48,46,.96)}
+.mlist{margin-top:10px}.mlist summary{cursor:pointer;font-weight:700;color:#f4e3c1;padding:8px 4px}
+.playpop{width:max-content;max-width:min(92vw,560px);box-sizing:border-box}
+.pp-cards img{width:clamp(54px,calc((min(92vw,560px) - 70px) / var(--n,1)),110px)}
+.lgame .mz-actions{grid-auto-columns:minmax(0,1fr)!important}
+.lgame .mz-actions .act{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgame .mz-actions:has(.act:nth-child(4)) .act{font-size:13px;padding:0 3px}
+.lgame .mz-actions .act.dump:not(:disabled){background:#5d6469;color:#fff;box-shadow:0 8px 18px rgba(40,40,40,.25)}
 .lgame .hand .card.newd{box-shadow:0 0 0 2.5px #d9483b,0 8px 16px rgba(60,40,10,.3)}
 @container (max-height:300px){.l-hist{display:none}.l-felt .cplabel{display:none}}
 .l-seat{color:#fff}
@@ -2354,7 +2367,7 @@ async function hiRes(key){if(HI[key])return HI[key];const st=window.__studio,c=A
   const w=key==="master"?1488:744;const cv=document.createElement("canvas");cv.width=w;cv.height=Math.round(w*1039/744);
   try{await st.drawFront(cv,c);HI[key]=await canvasURL(cv,"image/png")}catch(e){return ART[key]}return HI[key]}
 function zoomKey(key,extra){zoomCard(ART[key],extra,key)}
-function zoomCard(src,extra,key){if(key)hiRes(key).then(u=>{const z=document.getElementById("zimg");if(z&&u)z.src=u});modal(`<img class="bigcard" id="zimg" src="${src}" alt="">${extra||""}`,[{label:"ปิด",value:1,cls:"pri"}],{noClose:false})}
+function zoomCard(src,extra,key){if(key)hiRes(key).then(u=>{const z=document.getElementById("zimg");if(z&&u)z.src=u});modal(`<img class="bigcard fit" id="zimg" src="${src}" alt="">${extra||""}`,[{label:"ปิด",value:1,cls:"pri"}],{noClose:false,wide:true})}
 
 /* ---------- settings ---------- */
 function defaultSettings(){return{seats:[{name:"คุณ",human:true},{name:"บอท (สุ่ม)",human:false},{name:"บอท (สุ่ม)",human:false}],
@@ -2831,7 +2844,7 @@ function announce(p,text,cards,o={}){
   if(!o.pop)return;
   if(G.viewer===p.idx&&!o.force)return;
   document.querySelectorAll(".playpop").forEach(x=>x.remove());
-  const d=document.createElement("div");d.className="playpop"+(o.bad?" bad":"")+(o.combo?" combo":"");const life=Math.max(1500,S.speed*2);d.style.setProperty("--d",(life-350)/1000+"s");
+  const d=document.createElement("div");d.className="playpop"+(o.bad?" bad":"")+(o.combo?" combo":"");const life=Math.max(1500,S.speed*2);d.style.setProperty("--d",(life-350)/1000+"s");d.style.setProperty("--n",Math.max(1,Math.min(cards.length,4)));
   d.innerHTML=`<div class="pp-cap">${p.human?"🧑":"🤖"} <b>${esc(p.name)}</b> ${esc(text)}</div><div class="pp-cards">${cards.slice(0,8).map((c,i)=>`<img src="${imgFor(c)}" alt="" style="animation-delay:${i*.08}s">`).join("")}</div>`;
   document.body.appendChild(d);setTimeout(()=>d.remove(),life);
 }
@@ -2925,11 +2938,17 @@ function renderGame(){
   ${v?`<div class="myzone${G.cur===v.idx&&!G.over?" turn":""}" data-seat="${v.idx}" style="--zc:${seatColor(v)}">
     <div class="l-mhead"><div class="l-mwho"><div class="l-av hum" style="--zc:${seatColor(v)}">${esc((v.name||"?").trim().slice(0,1).toUpperCase())}</div><b>มือของคุณ</b>${mh===v.idx?'<span class="l-tag m">ถือ MASTER</span>':""}${v.skip?'<span class="l-tag sk">โดน SKIP</span>':""}</div>
       <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
-    <div class="hand" id="hand">${(()=>{const f=fanCalc(v.hand.length);const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;return v.hand.map((c,i)=>cardHTML(c,{selected:sel.has(c.u)}).replace(/^<div /,`<div style="${f(i)}" `).replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0)).join("")})()}</div>
-    <div class="detail">${one&&ART[artKey(one)]?'<button class="btn sm" id="bZoom">🔍</button>':""}${canUse?'<button class="btn sm dumpbtn" id="bDump">🗑 ทิ้ง</button>':""}<span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
+    <div class="hand" id="hand">${(()=>{const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;
+      const mark=(h,c)=>h.replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0);
+      const un=v.hand.filter(c=>!sel.has(c.u)),se=v.hand.filter(c=>sel.has(c.u));const cw=handCW(),step=Math.max(14,Math.round(cw*.22));
+      const trayW=se.length?cw+(se.length-1)*step:0,W=((G&&G.handW)||Math.min(innerWidth,760)-48)-(se.length?trayW+14:0);
+      const g=fanCalc(un.length,W);
+      return un.map((c,i)=>mark(cardHTML(c,{selected:false}).replace(/^<div /,`<div style="${g(i)}" `),c)).join("")+
+        (se.length?`<div class="seltray" style="width:${trayW}px"><span class="seltag">${se.length}</span>${se.map((c,i)=>mark(cardHTML(c,{selected:true}).replace(/^<div /,`<div style="left:${i*step}px;z-index:${60+i}" `),c)).join("")}</div>`:"")})()}</div>
+    <div class="detail">${one&&ART[artKey(one)]?'<button class="btn sm" id="bZoom">🔍</button>':""}<span>${mt&&one&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#ffb3a8">⛔ จั่วแล้ว — ตานี้ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det||(mt?`<span class="hintln">${hintText()}</span>`:'<span class="note">แตะการ์ดเพื่อเลือก (เลือกได้หลายใบ)</span>')}</span></div>
     <div class="mz-actions">
-      <button class="act play" id="bPlay" ${canPlay?"":"disabled"}>▶ ลงกองกลาง${cs.length>1?` (${cs.length})`:""}</button>
-      <button class="act spc" id="bUse" ${canUse?"":"disabled"}>⚡ การ์ดพิเศษ</button>
+      ${one&&one.kind==="special"?`<button class="act dump" id="bDump" ${canUse?"":"disabled"}>🗑 ทิ้ง</button>`:`<button class="act play" id="bPlay" ${canPlay?"":"disabled"}>▶ ${canSee(v)?"ลง":"ลงกองกลาง"}${cs.length>1?` (${cs.length})`:""}</button>`}
+      <button class="act spc" id="bUse" ${canUse?"":"disabled"}>⚡ ${one&&one.kind==="special"?"ใช้ "+esc(SP[one.act].name):"การ์ดพิเศษ"}</button>
       ${canSee(v)?'<button class="act mas" id="bSee">👀 Master</button>':""}
       <button class="act end" id="bEnd" ${canEnd?"":"disabled"}>⏭ PASS</button>
     </div>
@@ -2946,9 +2965,10 @@ function renderGame(){
   on("#bKey2",()=>{const p=v;if(p&&canSee(p))showMaster();else toast("ดู Master ได้เมื่อถือ Master (CONSULT / STEAL / ลงชุดครบ 3 ต่อม)")});
   on("#bQuit",async()=>{const r=await modal("<h3>ออกจากเกมนี้?</h3>",[{label:"กลับหน้าเลือกโหมด",value:1,cls:"red"},{label:"เล่นต่อ",value:0}]);if(r){epoch++;clearInterval(tick);G=null;humanDone=null;busy=false;go("mode")}});
 }
-function fanCalc(n){
-  const vw=Math.min(window.innerWidth,760),cw=window.innerHeight<=600?62:window.innerWidth<=560?72:86,W=(G&&G.handW)||vw-48;
-  let ov=n>1?(W-cw-30)/(n-1)-cw:0;ov=Math.min(6,Math.max(ov,-cw*.62));const mid=(n-1)/2;
+function handCW(){return window.innerHeight<=600?62:window.innerWidth<=560?72:86}
+function fanCalc(n,Wo){
+  const vw=Math.min(window.innerWidth,760),cw=handCW(),W=Wo||(G&&G.handW)||vw-48;
+  let ov=n>1?(W-cw-30)/(n-1)-cw:0;ov=Math.min(6,Math.max(ov,-cw*.8));const mid=(n-1)/2;
   return i=>{const d=i-mid;return`margin-left:${i?ov:0}px;--r:${n>4?d*Math.min(3,24/n):0}deg;--y:${n>4?Math.abs(d)*Math.min(3,30/n):0}px;z-index:${i}`};
 }
 function fanHand(){const h=$("#hand");if(h&&G&&h.clientWidth&&Math.abs((G.handW||0)-h.clientWidth)>2){G.handW=h.clientWidth;renderGame()}}
@@ -2974,7 +2994,7 @@ function masterModal(){
 }
 function masterHTML(){
   hiRes("master").then(u=>{const z=document.getElementById("zimg");if(z&&u)z.src=u});
-  return `<h3>MASTER · เฉลยฮอร์โมนทั้ง 36 ตามต่อม</h3>${ART.master?`<img class="bigcard" id="zimg" src="${ART.master}" alt="" style="margin-bottom:12px;width:min(560px,92vw)">`:""}<div class="mgrid">${D.glands.map(g=>`<div class="mg"><img src="${IMG[g.id]}" alt=""><div><h4>${esc(g.en)}</h4><div class="th">${esc(g.th)}</div><ul>${D.hormones.filter(h=>h.g===g.id).map(h=>`<li><b>${esc(h.abbr)}</b> — ${esc(h.full)}</li>`).join("")}</ul></div></div>`).join("")}</div>`;
+  return `${ART.master?`<img class="bigcard fit" id="zimg" src="${ART.master}" alt="Master card">`:""}<details class="mlist"><summary>ดูแบบรายการตัวหนังสือ (ไม่ต้องเลื่อนก็ได้)</summary><div class="mgrid">${D.glands.map(g=>`<div class="mg"><img src="${IMG[g.id]}" alt=""><div><h4>${esc(g.en)}</h4><div class="th">${esc(g.th)}</div><ul>${D.hormones.filter(h=>h.g===g.id).map(h=>`<li><b>${esc(h.abbr)}</b> — ${esc(h.full)}</li>`).join("")}</ul></div></div>`).join("")}</div></details>`;
 }
 function rulesHTML(){return`<div class="rules"><h3>กติกา · แบบกองกลางกองเดียว</h3><p class="note">ปรับจากเอกสารกติกาให้เล่นแบบ UNO · สีเหลือง = จุดที่แอปเลือกไว้ก่อน ปรับได้ตอน playtest</p>
   <h4>เริ่มเกม</h4><ul><li>แจกคนละ 7 ใบ (2 คน = 8) · Master คว่ำกลางโต๊ะ</li><li>เปิดการ์ดใบแรกจากกองจั่ววางกลางโต๊ะเสมอ (ถ้าเป็นการ์ดพิเศษ เปิดใหม่) แล้วผู้เล่นคนแรกลงต่อ วนไปเรื่อยๆ</li></ul>
