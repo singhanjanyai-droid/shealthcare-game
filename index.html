@@ -678,6 +678,10 @@ body:has(.lgame){background:#ecdfc6}
 .l-tag{font:800 10px var(--sf);padding:2px 7px;border-radius:7px;white-space:nowrap}.l-tag.m{background:#ffe9a6;color:#7a4f00}.l-tag.sk{background:#dbe7ff;color:#24408a}
 .l-mstat{display:flex;gap:5px}.l-mstat .l-chip{padding:3px 9px;border-radius:9px;font:700 11.5px var(--sf);color:#6b5a3c;white-space:nowrap}
 .lgame .myzone .hand .card{box-shadow:0 6px 14px rgba(60,40,10,.25)}
+.lgame .myzone .hand:has(.hrow){flex-direction:column;align-items:center;padding-top:14px}
+.lgame .myzone .hand .hrow{display:flex;justify-content:center;width:100%}
+.lgame .myzone .hand .hrow.r1{margin-top:calc(var(--ch,100px) * -.52);position:relative;z-index:30}
+.lgame .myzone .hand .hrow .card{box-shadow:0 -2px 8px rgba(60,40,10,.22),0 4px 10px rgba(60,40,10,.2)}
 .lgame .myzone .hand .card.sel{box-shadow:0 0 0 3px #f6b62a,0 12px 22px rgba(60,40,10,.35)}
 .lgame .myzone .detail{background:#fff;color:#1d2a28;box-shadow:0 6px 16px rgba(70,50,15,.10),0 0 0 1px rgba(70,50,15,.06);border-radius:12px;font-family:var(--sf)}
 .lgame .hintln{color:#7a5a12}
@@ -2960,7 +2964,13 @@ function renderGame(){
       <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
     <div class="hand" id="hand">${(()=>{const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;
       const mark=(h,c)=>h.replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0);
-      const un=v.hand.filter(c=>!sel.has(c.u));const g=fanCalc(un.length);
+      const ord=c=>c.kind==='gland'?0:c.kind==='hormone'?1:2,gk=c=>c.kind==='gland'?c.gid:c.kind==='hormone'?(HM[c.hid].g||HM[c.hid].gland||''):c.act;
+      const un=v.hand.filter(c=>!sel.has(c.u)).slice().sort((a,b)=>ord(a)-ord(b)||String(gk(a)).localeCompare(String(gk(b))));const cw=handCW(),W=(G&&G.handW)||Math.min(innerWidth,760)-48;
+      const vis=un.length>1?(W-cw-30)/(un.length-1):cw;
+      if(vis<cw*.5&&un.length>6){ // ไพ่เยอะ → แบ่ง 2 แถว ให้เห็นชื่อการ์ดทุกใบ
+        const k=Math.ceil(un.length/2),rows=[un.slice(0,k),un.slice(k)];
+        return rows.map((r,ri)=>{const g=fanCalc(r.length);return`<div class="hrow r${ri}">${r.map((c,i)=>mark(cardHTML(c,{selected:false}).replace(/^<div /,`<div style="${g(i).replace(/--r:[^;]*;--y:[^;]*;/,"--r:0deg;--y:0px;")}" `),c)).join("")}</div>`}).join("")}
+      const g=fanCalc(un.length);
       return un.map((c,i)=>mark(cardHTML(c,{selected:false}).replace(/^<div /,`<div style="${g(i)}" `),c)).join("")})()}</div>
     ${cs.length?`<div class="stage"><div class="stg-cards">${cs.map(c=>`<button class="stg" data-u="${c.u}" aria-label="เอา ${esc(cardName(c))} ออก"><img src="${ART[artKey(c)]||""}" alt=""><i>✕</i></button>`).join("")}</div>
       <div class="stg-txt">${cs.length>1?`<b>จะลง ${cs.length} ใบ</b><span>${esc(cs.map(cardName).join(" + "))}</span><small>แตะการ์ดเล็กเพื่อเอาออก</small>`:`<span class="stg-det">${mt&&one.kind==="special"&&!canUse&&t.drew&&!t.placed&&!t.special?'<b style="color:#c0392b">⛔ จั่วแล้ว — ใช้/ทิ้งได้เฉพาะใบที่เพิ่งจั่ว</b> · ':""}${det}</span>`}</div>
