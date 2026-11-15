@@ -620,6 +620,9 @@ body:has(.lgame){background:#ecdfc6}
 .l-dchip.glow{background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;box-shadow:0 0 14px rgba(246,182,42,.7);animation:pulse 1.2s ease-in-out infinite}
 .l-hist{max-width:min(300px,62cqw);font:500 11px var(--sf);color:#d8e7e5;background:rgba(0,0,0,.22);padding:3px 10px;border-radius:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .l-hist b{color:#fff}
+.l-myturn{padding:3px 10px;border-radius:10px;background:linear-gradient(180deg,#ffd864,#f0a417);color:#3a2600;font:800 12px var(--sf);white-space:nowrap;box-shadow:0 0 14px rgba(246,182,42,.65);animation:pulse 1.2s ease-in-out infinite}
+.lgame .myzone.turn .hand{filter:drop-shadow(0 0 10px rgba(246,182,42,.45))}
+.lgame .myzone.turn .l-mwho>.l-av{box-shadow:0 0 0 2px #fff,0 0 0 4px #f6b62a,0 0 14px rgba(246,182,42,.8)}
 .lgame .hand .card.newd::after{content:"ใหม่";position:absolute;top:-9px;left:50%;transform:translateX(-50%);padding:1px 8px;border-radius:8px;background:#d9483b;color:#fff;font:800 10.5px var(--sf);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:3}
 .lgame .myzone .hand .seltray{position:relative;flex:none;margin-left:14px;height:var(--ch,100px);align-self:flex-end}
 .lgame .myzone .hand .seltray .card{position:absolute;top:-16px;margin:0!important;transform:none!important}
@@ -2936,7 +2939,7 @@ function renderGame(){
       <i class="l-sp" style="left:16px;top:40px"></i><i class="l-sp s" style="right:20px;bottom:46px"></i>
       ${others3[1]?seatHTML(others3[1],"left"):""}${others3[2]?seatHTML(others3[2],"right"):""}
       <div class="l-center">
-        <div class="l-turn${cur.idx===G.viewer&&!G.over?" mine":""}">${turnChip}</div>
+        ${G.over||G.viewer===null?`<div class="l-turn">${turnChip}</div>`:""}
         <div class="cpile" id="pTop">${G.flying?pileHTML().replace('class="pc top"','class="pc"'):pileHTML()}</div>
         <div class="cplabel">${ref?`ต่อจาก <b>${esc(cardName(ref))}</b>${top&&top.kind==="special"?" (ใต้การ์ดพิเศษ)":""}`:""}</div>
         <div class="l-dchips">
@@ -2950,7 +2953,7 @@ function renderGame(){
     ${others3[0]?seatHTML(others3[0],"top"):""}
   </div>
   ${v?`<div class="myzone${G.cur===v.idx&&!G.over?" turn":""}" data-seat="${v.idx}" style="--zc:${seatColor(v)}">
-    <div class="l-mhead"><div class="l-mwho"><div class="l-av hum" style="--zc:${seatColor(v)}">${esc((v.name||"?").trim().slice(0,1).toUpperCase())}</div><b>มือของคุณ</b>${mh===v.idx?'<span class="l-tag m">ถือ MASTER</span>':""}${v.skip?'<span class="l-tag sk">โดน SKIP</span>':""}</div>
+    <div class="l-mhead"><div class="l-mwho"><div class="l-av hum" style="--zc:${seatColor(v)}">${esc((v.name||"?").trim().slice(0,1).toUpperCase())}</div><b>มือของคุณ</b>${G.cur===v.idx&&!G.over?'<span class="l-myturn">✨ ตาของคุณ!</span>':""}${mh===v.idx?'<span class="l-tag m">ถือ MASTER</span>':""}${v.skip?'<span class="l-tag sk">โดน SKIP</span>':""}</div>
       <div class="l-mstat"><span class="l-chip">ชุด ${v.setGlands.size}/3${v.gotFree?" ✓":""}</span><span class="l-chip">${v.hand.length} ใบ · HP ${handHP(v).toLocaleString()}</span></div></div>
     <div class="hand" id="hand">${(()=>{const nu=v.turn&&v.turn.drew?v.turn.drawnU:null;
       const mark=(h,c)=>h.replace(/^<div ([^>]*?)class="/,(m0,a)=>c.u===nu?`<div ${a}data-new="1" class="newd `:m0);
