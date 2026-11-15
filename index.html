@@ -716,10 +716,10 @@ body::before{content:"";position:fixed;inset:0;background:rgba(244,236,220,.5);p
 .t2-title span{margin-top:6px;font:700 17px var(--sf);color:#4b5f5c}
 .t2-fan{position:relative!important;z-index:5!important;margin-top:6px}
 .t2-sheet{position:relative;z-index:1;align-self:stretch;flex:1;margin:-120px auto 0;width:100%;max-width:640px;border-radius:40px 40px 0 0;background:#f4e3c1;padding:8px 8px 0;box-shadow:0 -12px 34px rgba(60,40,10,.18);display:flex}
-.t2-felt{position:relative;flex:1;border-radius:32px 32px 0 0;background:radial-gradient(ellipse at 50% 20%,#346a66 0%,#1f4846 55%,#133432 100%);display:flex;flex-direction:column;align-items:center;gap:12px;padding:136px 12px max(18px,env(safe-area-inset-bottom));overflow:hidden}
+.t2-felt{position:relative;flex:1;border-radius:32px 32px 0 0;background:radial-gradient(ellipse at 50% 20%,#346a66 0%,#1f4846 55%,#133432 100%);display:flex;flex-direction:column;align-items:center;gap:16px;padding:150px 12px max(18px,env(safe-area-inset-bottom));overflow:hidden}
 .t2-felt::before{content:"";position:absolute;left:7px;right:7px;top:7px;bottom:-10px;border-radius:26px 26px 0 0;border:1px solid rgba(246,182,42,.45);pointer-events:none}
 .t2-chars{display:flex;gap:2px;padding:5px 10px;border-radius:18px;background:rgba(0,0,0,.22)}
-.t2-chars img{width:36px;height:36px;object-fit:contain;animation:hop 1.1s cubic-bezier(.3,0,.4,1) infinite}.t2-chars img:nth-child(2n){animation-delay:-.3s}.t2-chars img:nth-child(3n){animation-delay:-.6s}
+.t2-chars img{width:40px;height:40px;object-fit:contain;animation:hop 1.1s cubic-bezier(.3,0,.4,1) infinite}.t2-chars img:nth-child(2n){animation-delay:-.3s}.t2-chars img:nth-child(3n){animation-delay:-.6s}
 .t2-stats{display:flex;gap:8px}
 .t2-stat{display:flex;flex-direction:column;align-items:center;min-width:92px;padding:7px 6px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(244,227,193,.25)}
 .t2-stat b{font:900 20px/1 var(--sf);color:#ffd864}.t2-stat span{margin-top:3px;font:600 11.5px var(--sf);color:#e8dcc2}
@@ -3267,7 +3267,6 @@ async function renderLoading(){
     <div class="t2-sheet"><div class="t2-felt">
       <i class="l-sp" style="left:22px;top:34px"></i><i class="l-sp s" style="right:26px;top:64px"></i>
       <div class="t2-chars">${["pin","post","para","thym","hyp","gon","ant"].map(g=>`<img src="${IMG[g]}" alt="${esc(GL[g].en)}">`).join("")}</div>
-      <div class="t2-stats">${st(D.glands.length,"ต่อมไร้ท่อ")}${st(D.hormones.length,"ฮอร์โมน")}${st("2–5","ผู้เล่น")}</div>
       <div class="lbar2"><div class="lfill2" id="lfill"></div></div><div class="ltxt" id="ltxt">กำลังโหลดการ์ด… 0%</div>
       <div id="lgo" class="lgo"></div>
       <div class="t2-foot"><span>UNIVERSAL CARD</span>${bars}</div>
