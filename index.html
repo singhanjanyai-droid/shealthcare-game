@@ -2365,11 +2365,14 @@ async function buildArt(progress){
   D.hormones.forEach(h=>jobs.push(["h-"+h.id,()=>studioCard(deck,"hormone",/hormone|ฮอร์โมน/i,"h-"+h.id)]));
   Object.keys(SP).forEach(a=>{const k=SHIELDS.includes(a)?["shi",/shield/i]:a==="consult"?["con",/consult/i]:["def",/defeat/i];jobs.push(["x-"+a,()=>studioCard(deck,k[0],k[1],"x-"+a)])});
   jobs.push(["master",()=>studioCard(deck,"master",/master/i,null,"master")]);
+  const FK=["g-adr","g-thy","g-pan"];jobs.sort((a,b)=>(FK.includes(b[0])?1:0)-(FK.includes(a[0])?1:0)); // วาดการ์ดหน้า intro ก่อน
   const cv=document.createElement("canvas");cv.width=300;cv.height=Math.round(300*1039/744);
+  const dkey=fanKey(deck);let fanDone=false;
   let i=0;
   for(const [key,mk] of jobs){
-    try{let c=mk();if(c){const hp=key.startsWith("x-")?HPof({kind:"special",act:key.slice(2)}):key==="master"?null:100;if(hp!=null)c=Object.assign({},c,{hp:String(hp)});await st.drawFront(cv,c);ART[key]=await canvasURL(cv);ARTSRC[key]=c}}catch(e){console.warn("art",key,e)}
+    try{let c=mk();if(c){const hp=key.startsWith("x-")?HPof({kind:"special",act:key.slice(2)}):key==="master"?null:100;if(hp!=null)c=Object.assign({},c,{hp:String(hp)});await st.drawFront(cv,c);ART[key]=await canvasURL(cv);ARTSRC[key]=c;if(FK.includes(key))FANDATA[key]=cv.toDataURL("image/webp",.85)}}catch(e){console.warn("art",key,e)}
     if(progress)progress(++i,jobs.length+2);
+    if(!fanDone&&FK.every(k=>ART[k])){fanDone=true;const f=document.getElementById("fan");if(f)f.innerHTML=fanCards();saveFanCache(dkey)}
     await yieldUI();
   }
   try{const g=studioCard(deck,"gland",/gland/i,"g-ant");await st.drawBack(cv,g);ART.back=await canvasURL(cv)}catch(e){}
@@ -3258,9 +3261,14 @@ function bgfx(splash){return`<div class="bgfx card-bg"><svg aria-hidden="true" c
 function cardHeader(){return`<div class="chead"><div class="chead-l"><img src="${GLAND_ICON}" alt=""><span>• ENDOCRINE GLAND</span></div><div class="cdots"><i style="background:#25b0ad"></i><i style="background:#f4a93b"></i><i style="background:#b5e14a"></i><i style="background:#f2585c"></i></div></div>`}
 function cardTitle(sm){return`<div class="ctitle${sm?" sm":""}"><div class="ct-main">ENDOCRINE</div><div class="ct-pill">เกมการ์ดต่อมไร้ท่อ · GAME CARD</div></div>`}
 function cardFooter(){return`<div class="cfoot"><div class="cf-label">UNIVERSAL CARD</div><div class="cf-row"><span>© SHEALTHCARE GAME CARD</span><span class="cf-dash"><i style="background:#25b0ad"></i><i style="background:#f4a93b"></i><i style="background:#b5e14a"></i><i style="background:#f2585c"></i></span></div></div>`}
+function fanKey(deck){try{const t=JSON.stringify(deck);let h=0;for(let i=0;i<t.length;i+=7)h=(h*31+t.charCodeAt(i))|0;return"v2:"+t.length+":"+h}catch(e){return"v2"}}
+const FANDATA={};
+function saveFanCache(dkey){try{const o={k:dkey};for(const x of["g-adr","g-thy","g-pan"]){if(!FANDATA[x])return;o[x]=FANDATA[x]}localStorage.setItem("shc-fan",JSON.stringify(o))}catch(e){}}
+function fanCache(){try{const o=JSON.parse(localStorage.getItem("shc-fan")||"null");if(o&&o["g-thy"])return o}catch(e){}return null}
 function fanCards(){
   const k=["g-adr","g-thy","g-pan"];
-  if(artReady&&k.every(x=>ART[x]))return k.map((x,i)=>`<img class="fc fc${i}" src="${ART[x]}" alt="">`).join("");
+  if(!k.every(x=>ART[x])){const c=fanCache();if(c)return k.map((x,i)=>`<img class="fc fc${i}" src="${c[x]}" alt="">`).join("")}
+  if(k.every(x=>ART[x]))return k.map((x,i)=>`<img class="fc fc${i}" src="${ART[x]}" alt="">`).join("");
   return["adr","thy","pan"].map((g,i)=>`<div class="fc fc${i} fc-ph"><img src="${IMG[g]}" alt=""></div>`).join("");
 }
 function charRow(){return`<div class="crow">${["pin","post","para","thym","hyp","gon","ant"].map(g=>`<img src="${IMG[g]}" alt="${esc(GL[g].en)}">`).join("")}</div>`}
